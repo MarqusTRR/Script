@@ -4223,7 +4223,13 @@ LeftGroupBox:AddButton('Function : [ One Shot ]', function()
             mouse.Button1Down:connect(function()
             t = mouse.Target
                 if t then
-                    game:GetService("ReplicatedStorage").Remote.Knife:FireServer()
+                    if game.Players.LocalPlayer.Character:FindFirstChild("Knife")  then
+                        game:GetService("ReplicatedStorage").Remote.Knife:FireServer()
+                    elseif game.Players.LocalPlayer.Character:FindFirstChild("Bottle")  then
+                        game:GetService("ReplicatedStorage").Remote.Knife:FireServer()
+                    elseif game.Players.LocalPlayer.Character:FindFirstChild("Golf Club")  then
+                        game:GetService("ReplicatedStorage").Remote.Golf:FireServer()
+                    end
                 end
             end)
         end)
