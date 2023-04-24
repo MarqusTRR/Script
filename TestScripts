@@ -1,0 +1,34 @@
+local mt = getrawmetatable(game)
+local oldindex = mt.__index
+local oldnewindex = mt.__newindex
+setreadonly(mt, false)
+local hum = game:service'Players'.LocalPlayer.Character.Humanoid
+local oldws = hum.WalkSpeed
+local oldjp = hum.JumpPower
+mt.__newindex = newcclosure(function(t, k, v)
+    if checkcaller() then
+        return oldnewindex(t,k,v)
+    elseif (t:IsA'Humanoid' and k == "WalkSpeed") then
+        v = tonumber(v)
+        if not v then v = 0 end
+        oldws = v
+    elseif (t:IsA'Humanoid' and k == "JumpPower") then
+        v = tonumber(v)
+        if not v then v = 0 end
+        oldjp = v
+    else
+        return oldnewindex(t,k,v)
+    end
+end)
+mt.__index = newcclosure(function(t, k)
+    if checkcaller() then
+        return oldindex(t,k)
+    elseif (t:IsA'Humanoid' and k == "WalkSpeed") then
+        return oldws
+    elseif (t:IsA'Humanoid' and k == "JumpPower") then
+        return oldjp
+    else
+        return oldindex(t,k)
+    end
+end)
+setreadonly(mt, true)
